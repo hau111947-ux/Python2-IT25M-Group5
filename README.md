@@ -54,7 +54,7 @@ Trong học phần Phát triển Ứng dụng Web, em đã xây dựng dự án 
 *Hình ảnh dự án.
 <img width="643" height="907" alt="image" src="https://github.com/user-attachments/assets/30c4172b-a60f-47dc-8b81-ee1614fa8abb" />
 
-## 📁 4. CẤU TRÚC THƯ MỤC DỰ ÁN
+## 📁 4. CẤU TRÚC THƯ MỤC DỰ ÁN.
 
 ```text
 food_ba_khi/
