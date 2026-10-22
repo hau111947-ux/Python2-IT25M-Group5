@@ -1,0 +1,27 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+<h2>Đơn hàng của tôi</h2>
+<table>
+  <tr><th>Món</th><th>SL</th><th>Tổng</th><th>Trạng thái</th><th></th></tr>
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.food.name }}</td>
+    <td>{{ o.quantity }}</td>
+    <td>{{ o.total|floatformat:0 }}đ</td>
+    <td>{{ o.get_status_display }}</td>
+    <td>
+      {% if o.status == 'placed' %}
+      <form method="post" action="{% url 'order_action' o.id 'cancel' %}" style="display:inline">
+        {% csrf_token %}<button>Hủy</button>
+      </form>
+      <form method="post" action="{% url 'order_action' o.id 'refund' %}" style="display:inline">
+        {% csrf_token %}<button>Hoàn</button>
+      </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="5">Chưa có đơn nào.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+<div class="panel detail">
+  <div class="food-img">
+    {% if food.image_url %}<img src="{{ food.image_url }}" alt="{{ food.name }}">{% else %}🍲{% endif %}
+  </div>
+  <div>
+    <h2>{{ food.name }}</h2>
+    <div class="price" style="font-size:26px">{{ food.price|floatformat:0 }}đ</div>
+    <p class="muted" style="font-size:16px">{{ food.description|default:"Chưa có mô tả." }}</p>
+
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'order_create' food.id %}">
+      {% csrf_token %}
+      <label>Số lượng:
+        <input type="number" name="quantity" value="1" min="1" style="width:80px">
+      </label>
+      <button type="submit">🛒 Đặt món</button>
+    </form>
+    {% else %}
+      <p><a class="btn" href="{% url 'login' %}?next={{ request.path }}">Đăng nhập để đặt món</a></p>
+    {% endif %}
+    <p><a href="{% url 'food_list' %}">&larr; Quay lại thực đơn</a></p>
+  </div>
+</div>
+{% endblock %}

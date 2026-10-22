@@ -1,0 +1,10 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+<h2>{{ title }}</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Lưu</button>
+  <a href="{% url 'food_list' %}">Hủy</a>
+</form>
+{% endblock %}

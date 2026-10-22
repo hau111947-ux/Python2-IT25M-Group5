@@ -1,0 +1,15 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+<h2>So sánh giá</h2>
+<table>
+  <tr><th>Món</th><th>Giá</th><th>Chênh lệch so với rẻ nhất</th></tr>
+  {% for r in rows %}
+  <tr {% if forloop.first %}class="best"{% endif %}>
+    <td><a href="{% url 'food_detail' r.food.id %}">{{ r.food.name }}</a></td>
+    <td>{{ r.food.price|floatformat:0 }}đ</td>
+    <td>{% if forloop.first %}Rẻ nhất{% else %}+{{ r.diff|floatformat:0 }}đ{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+<p><a href="{% url 'food_list' %}">&larr; Quay lại</a></p>
+{% endblock %}

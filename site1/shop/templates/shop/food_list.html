@@ -1,0 +1,71 @@
+{% extends 'shop/base.html' %}
+{% block content %}
+
+<style>
+  .banner {
+    background: linear-gradient(135deg, #ff6b35, #ffb347);
+    color: #fff;
+    border-radius: 18px;
+    padding: 36px 28px;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  .banner h1 { margin: 0 0 8px; font-size: 32px; }
+  .banner p { margin: 0 0 16px; font-size: 16px; opacity: .95; }
+  .banner a { background: #fff; color: #ff6b35; }
+</style>
+
+<div class="banner">
+  <h1>🍜 Đồ ăn ngon, giao tận nơi</h1>
+  <p>Chọn món yêu thích, so sánh giá và đặt hàng chỉ trong vài giây.</p>
+  <a class="btn" href="#thuc-don">Xem thực đơn</a>
+</div>
+
+<h2 id="thuc-don">Thực đơn hôm nay</h2>
+
+<form method="get" class="search-bar">
+  <input name="q" value="{{ q }}" placeholder="🔍 Tìm món ăn...">
+  <select name="sort">
+    <option value="">Sắp xếp theo giá</option>
+    <option value="asc" {% if sort == 'asc' %}selected{% endif %}>Giá tăng dần</option>
+    <option value="desc" {% if sort == 'desc' %}selected{% endif %}>Giá giảm dần</option>
+  </select>
+  <button type="submit">Tìm</button>
+</form>
+
+<form method="get" action="{% url 'food_compare' %}">
+  <div class="grid">
+    {% for f in foods %}
+    <div class="food-card">
+      <label class="pick" title="Chọn để so sánh">
+        <input type="checkbox" name="ids" value="{{ f.id }}">
+      </label>
+      <a href="{% url 'food_detail' f.id %}">
+        <div class="food-img">
+          {% if f.image_url %}<img src="{{ f.image_url }}" alt="{{ f.name }}">{% else %}🍲{% endif %}
+        </div>
+      </a>
+      <div class="food-body">
+        <a class="food-name" href="{% url 'food_detail' f.id %}">{{ f.name }}</a>
+        <div class="price">{{ f.price|floatformat:0 }}đ</div>
+        <div class="muted">{{ f.description|truncatechars:60 }}</div>
+        <div class="card-actions">
+          <a class="btn btn-sm" href="{% url 'food_detail' f.id %}">Xem &amp; đặt</a>
+          {% if user.is_staff %}
+            <a class="btn btn-outline btn-sm" href="{% url 'food_update' f.id %}">Sửa</a>
+            <a class="btn btn-danger btn-sm" href="{% url 'food_delete' f.id %}">Xóa</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% empty %}
+      <p class="muted">Chưa có món nào.</p>
+    {% endfor %}
+  </div>
+  {% if foods %}
+  <div class="compare-bar">
+    <button type="submit">⚖️ So sánh giá các món đã chọn</button>
+  </div>
+  {% endif %}
+</form>
+{% endblock %}
